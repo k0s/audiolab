@@ -24,7 +24,8 @@ wavfile.write('output.wav', sample_rate, filtered_signal)
 
 ## Goals
 
-- [ ] Simple Sine Wave:  given a frequency (tone), generate a sine wave
+- [x] Simple Sine Wave:  given a frequency (tone), generate a sine wave
+- [ ] FFT: given a WAV file, what is the fundamental frequency? Use this as a test to validate tone generation (see https://numpy.org/doc/stable/reference/generated/numpy.fft.fftfreq.html and perhaps https://stackoverflow.com/questions/57251454/how-to-find-the-fundamental-frequency-of-a-wav-file )
 - [ ] FM Synthesis: https://www.javelinart.com/FM_Synthesis_of_Real_Instruments.pdf
 
 ## Installation
