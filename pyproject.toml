@@ -20,6 +20,9 @@ dev = [
     "mypy",
 ]
 
+[project.scripts]
+tone = "audiolab.tone:main"
+
 [tool.black]
 line-length = 88
 target-version = ['py39']
