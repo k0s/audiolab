@@ -9,40 +9,54 @@ import wave
 
 
 class Tone:
+    """
+    Sine tone
+    """
+
     def __init__(self, frequency: float):
         self.frequency = frequency
+        # self.offset = TODO : offset phase
 
-    def generate(self) -> np.ndarray:
+    def generate(self, t: np.ndarray) -> np.ndarray:
         """
         Generate a tone (sine wave) at a given frequency.
         """
-        raise NotImplementedError("TODO")
-        # return np.sin(2 * np.pi * self.frequency * t)
+        return np.sin(2 * np.pi * self.frequency * t)
+    __call__ = generate
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--frequency", type=float, default=440.)
-    parser.add_argument("--duration", type=float, default=2.)
-    parser.add_argument("--sample-rate", type=int, default=44100)
-    parser.add_argument("-o", "--output", type=str, required=True)
-    options = parser.parse_args()
 
-    num_channels = 1
-    sample_width = 2
-    frame_rate = options.sample_rate
+def writewav(output: str, amplitude: np.ndarray, frame_rate: int, sample_width=2):
+    """
+    Write a wave file from a discrete array
+    """
+
+    # Variables for this wave file
+    num_channels = 1  # TODO: compute from PCM
     num_frames = 0
     comp_type = "NONE"
     comp_name = "not compressed"
 
-    with wave.open(options.output, 'wb') as wav_file:
+    with wave.open(output, 'wb') as wav_file:
         wav_file.setparams((num_channels, sample_width, frame_rate, num_frames, comp_type, comp_name))
-    #tone = Tone(args.frequency)
-    #tone.generate()
-
-        duration = 5
-        frequency = 440
-        time = np.linspace(0, duration, int(frame_rate * duration), False)
-        amplitude = np.int16(32767 * np.sin(2 * np.pi * frequency * time))
-
         for sample in amplitude:
-            wav_file.writeframes(struct.pack('h', sample))
+            wav_file.writeframes(struct.pack('h', sample))    
+
+
+def main():
+    """CLI"""
+
+    # Parse command line
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-f", "--frequency", type=float, default=440.)
+    parser.add_argument("--duration", type=float, default=5.)
+    parser.add_argument("--sample-rate", type=int, default=44100)
+    parser.add_argument("-o", "--output", type=str, required=True)
+    options = parser.parse_args()
+
+    # Compute the PCM amplitude
+    time = np.linspace(0, options.duration, int(options.sample_rate * options.duration), False)
+    tone = Tone(options.frequency)
+    amplitude = np.int16(32767*tone(time))
+
+    # Write the wave file
+    writewav(options.output, amplitude, options.sample_rate)
