@@ -26,3 +26,39 @@ wavfile.write('output.wav', sample_rate, filtered_signal)
 
 - [ ] Simple Sine Wave:  given a frequency (tone), generate a sine wave
 - [ ] FM Synthesis: https://www.javelinart.com/FM_Synthesis_of_Real_Instruments.pdf
+
+## Installation
+
+Ensure you have Python 3.9 or higher installed.
+
+```
+# python --version
+Python 3.9.21
+```
+
+Make a virtual environment and install the dependencies.
+
+```
+python -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
+pip install -e .
+```
+
+## Run the tests.
+
+> TODO: Add `tox` to run the tests.
+
+Ensure you have the dev dependencies installed.
+
+```
+pip install -e .[dev]
+```
+
+Run the tests.
+
+```
+pytest
+```
+
+
